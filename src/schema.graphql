@@ -1,14 +1,31 @@
 type Query {
   info: String!
   feed: [Link!]!
+  link(id: ID!): Link
 }
 
 type Mutation {
   post(url: String!, description: String!): Link!
+  signup(email: String!, password: String!, name: String!): AuthPayload
+  login(email: String!, password: String!): AuthPayload
 }
 
 type Link {
-  id: ID!
+  id: ID! @unique
   description: String!
   url: String!
+  postedBy: User
+}
+
+type User {
+  id: ID! @unique
+  name: String!
+  email: String! @unique
+  password: String!
+  links: [Link!]!
+}
+
+type AuthPayload {
+  token: String
+  user: User
 }
